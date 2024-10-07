@@ -14,6 +14,8 @@ library(kableExtra)
 
 ```{r}
 dat <- read.csv('C:/Users/Eddie/OneDrive/Desktop/BIOSTAT/BIOS 6621/Week 6/lead-iq-01.csv')
+outlier <- which(dat$IQ==999)
+dat$IQ[outlier] <- 99
 ```
 
 ### Make graph
@@ -29,17 +31,17 @@ mymod <- lm(IQ ~ as.factor(Smelter), data = dat)
 summary(mymod)
 
 df <- data.frame(
-  estimate = c(106.12, -16.93),
-  SE = c(10.10, 14.90),
-  teststat <- c(10.503, -1.136),
-  pval <- c('<0.0001', '0.258')
+  estimate = c(92.687, -3.494),
+  SE = c(1.754, 2.587),
+  teststat <- c(52.847, -1.351),
+  pval <- c('<0.0001', '0.179')
 )
 colnames(df) = c('Estimate', 'SE','Test Statistic', 'P-Value')
 
 df %>% kable(caption = "Model Output of mymod")
 ```
 
-We clearly see from our boxplot that there is a very large outlier in the "Far" smelter group. From our simple linear regression model, we see that children who are within 1 mile of the smelter are expected to have an IQ 16.93 points fewer when compared to children who live further than 1 mile from the smelter, although this difference is not statistically significant (p=0.258).
+We clearly see from our boxplot that the outlier is gone. From our simple linear regression model, we see that children who are within 1 mile of the smelter are expected to have an IQ 3.494 points fewer when compared to children who live further than 1 mile from the smelter, although this difference is not statistically significant (p=0.179).
 
 ```{r}
 mean(dat$IQ)
