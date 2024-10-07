@@ -1,0 +1,46 @@
+---
+title: "Reproducible Reporting"
+author: "Edward Bosko"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(kableExtra)
+```
+
+## Reproducible Reporting
+
+```{r}
+dat <- read.csv('C:/Users/Eddie/OneDrive/Desktop/BIOSTAT/BIOS 6621/Week 6/lead-iq-01.csv')
+```
+
+### Make graph
+
+```{r}
+boxplot(IQ ~ Smelter, data = dat, main = 'IQ by Distance from Smelter', ylab = 'IQ')
+```
+
+### Make table
+
+```{r}
+mymod <- lm(IQ ~ as.factor(Smelter), data = dat)
+summary(mymod)
+
+df <- data.frame(
+  estimate = c(106.12, -16.93),
+  SE = c(10.10, 14.90),
+  teststat <- c(10.503, -1.136),
+  pval <- c('<0.0001', '0.258')
+)
+colnames(df) = c('Estimate', 'SE','Test Statistic', 'P-Value')
+
+df %>% kable(caption = "Model Output of mymod")
+```
+
+We clearly see from our boxplot that there is a very large outlier in the "Far" smelter group. From our simple linear regression model, we see that children who are within 1 mile of the smelter are expected to have an IQ 16.93 points fewer when compared to children who live further than 1 mile from the smelter, although this difference is not statistically significant (p=0.258).
+
+```{r}
+mean(dat$IQ)
+```
